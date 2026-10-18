@@ -1,0 +1,23 @@
+{
+  "configuredAt": "2026-10-18T09:22:57.200190+00:00",
+  "enabled": true,
+  "modelId": "forensic-atlas-qwen35-2b",
+  "upstreamModel": "Qwen/Qwen3.5-2B",
+  "quantizationRepo": "unsloth/Qwen3.5-2B-GGUF",
+  "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+  "quantization": "Q4_K_M",
+  "license": "Apache-2.0",
+  "modelSha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "modelPath": "models\\phase2\\Qwen3.5-2B-Q4_K_M.gguf",
+  "runtimePath": "local-runtime\\llama-b11718\\llama-server.exe",
+  "runtimeVersion": "b11718",
+  "runtimeSha256": "92cc529b29a43f9a30e21d490cb2e95062acd0b59af6fee8b3b52b28074f838c",
+  "baseUrl": "http://127.0.0.1:8111/v1",
+  "contextTokens": 4096,
+  "timeoutSeconds": 90,
+  "trainedByUs": false,
+  "sources": {
+    "model": "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/resolve/f6d5376be1edb4d416d56da11e5397a961aca8ae/Qwen3.5-2B-Q4_K_M.gguf",
+    "runtime": "https://github.com/ggml-org/llama.cpp/releases/download/b11718/llama-b11718-bin-win-cpu-x64.zip"
+  }
+}

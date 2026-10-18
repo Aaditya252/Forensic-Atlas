@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "id": "DF-24-017",
+      "title": "Northstar fictional investigation",
+      "folder": "storage",
+      "coverage": "Seeded graph relationships, review, timeline, agent memory, reports and synthetic tone."
+    },
+    {
+      "id": "PUBLIC-NITROBA-2008",
+      "title": "Nitroba forensic training case",
+      "folder": "public/nitroba-2008",
+      "coverage": "Scenario, PCAP intake, screenshots, hashes and image metadata. Packet interpretation is not implemented."
+    },
+    {
+      "id": "PUBLIC-MEDIA-TESTS",
+      "title": "Video, image and natural speech",
+      "folder": "public/media-functional-pack",
+      "coverage": "Four MP4/WebM videos, JPEG, six speech WAVs, codec inspection, audio playback and measured waveform."
+    },
+    {
+      "id": "PUBLIC-DEEPFAKE-AUDIO",
+      "title": "Published generated speech",
+      "folder": "public/deepfake-audio",
+      "coverage": "Three publisher-labeled MelGAN originals plus three PCM derivatives: intake, hashes, metadata, waveform, agents and cited reports. No local authenticity verdict."
+    }
+  ]
+}

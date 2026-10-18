@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forensic Atlas — Sovereign Digital Forensics Intelligence</title>
+  <meta name="description" content="Air-gapped digital forensics intelligence platform combining 14 deterministic specialist agents, FalkorDB sub-millisecond knowledge graphs, offline local neural models, and cryptographic chain-of-custody verification.">
+  
+  <!-- Modern Typography from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Cybernetic HUD Styling -->
+  <link rel="stylesheet" href="frontpage.css">
+  
+  <!-- Three.js + GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+  <!-- Persistent 3D WebGL Background Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- Cyber Grid, Scanline Layers & Vignette -->
+  <div class="cyber-grid"></div>
+  <div class="cyber-scanlines"></div>
+  <div class="vignette"></div>
+
+  <!-- ── FIXED TOP HUD NAVIGATION ── -->
+  <header class="top-nav">
+    <a href="#section-intro" class="brand-block" id="brandHomeLink">
+      <div class="brand-icon">
+        <img src="forensic_atlas_badge.jpg" alt="Forensic Atlas Badge">
+      </div>
+      <div class="brand-text">
+        <h1>Forensic <span>Atlas</span></h1>
+        <div class="sub">SOVEREIGN FORENSIC PLATFORM</div>
+      </div>
+    </a>
+
+    <!-- Central Feature Navigation -->
+    <nav class="nav-modules-strip">
+      <a href="#section-intro" class="nav-module-link active" title="Sovereign Genesis">
+        <span>00. Genesis</span>
+      </a>
+      <a href="#section-agents" class="nav-module-link" title="14-Agent Intelligence Hub">
+        <span>01. 14-Agent Hub</span>
+      </a>
+      <a href="#section-graph" class="nav-module-link" title="FalkorDB Knowledge Graph">
+        <span>02. Graph Nexus</span>
+      </a>
+      <a href="#section-deepfake" class="nav-module-link" title="Deepfake Lab & Acoustic Forensics">
+        <span>03. Deepfake Lab</span>
+      </a>
+      <a href="#section-vault" class="nav-module-link" title="Cryptographic Evidence Vault">
+        <span>04. Evidence Vault</span>
+      </a>
+      <a href="cases.html" class="nav-module-link highlight" title="Open Forensic Atlas Case Library">
+        <span>Live System &rarr;</span>
+      </a>
+    </nav>
+
+    <!-- Live Telemetry Ticker Strip -->
+    <div class="nav-ticker-strip">
+      <div class="ticker-item">
+        <span class="ticker-label">BACKEND:</span>
+        <span class="ticker-val green">FASTAPI :8100</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">LOCAL MODEL:</span>
+        <span class="ticker-val cyan">QWEN3.5-2B :8111</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">GRAPH:</span>
+        <span class="ticker-val">FALKORDB :6380</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">ACTIVE CASE:</span>
+        <span class="ticker-val amber">DF-24-017</span>
+      </div>
+    </div>
+
+    <!-- Navigation Action Controls -->
+    <div class="nav-actions">
+      <button id="soundToggleBtn" class="bw-btn active" title="Toggle Cybernetic Audio SFX">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <span id="soundText">SFX ON</span>
+      </button>
+
+      <button id="quickNextBtn" class="bw-btn" title="Jump to Next Forensic Level">
+        <span>NEXT &darr;</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── FIXED VERTICAL LEVEL SCRUBBER (RIGHT) ── -->
+  <nav class="vertical-scrubber">
+    <div class="scrubber-track">
+      <div class="scrubber-fill" id="scrubberFill"></div>
+    </div>
+
+    <button class="scrubber-item active" data-target="section-intro" title="Genesis Block">
+      <span class="scrubber-tag">00. Sovereign Genesis</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-agents" title="Level 1: 14-Agent Hybrid Hub">
+      <span class="scrubber-tag">01. 14-Agent Pipeline</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-graph" title="Level 2: FalkorDB Knowledge Graph">
+      <span class="scrubber-tag">02. Graph Nexus</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-deepfake" title="Level 3: Deepfake Laboratory">
+      <span class="scrubber-tag">03. Deepfake &amp; Audio Lab</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-vault" title="Level 4: Cryptographic Evidence Vault">
+      <span class="scrubber-tag">04. Evidence Vault</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+  </nav>
+
+  <!-- ── VERTICAL SCROLL SECTIONS ── -->
+  <main class="scroll-container">
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- INTRO SECTION (00): SOVEREIGN GENESIS & 3D FORENSIC MONOLITH -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section intro-section" id="section-intro">
+      <div class="intro-badge">
+        <span class="intro-dot"></span>
+        <span>DEFENSE-GRADE EVIDENCE INTEGRITY &bull; AIR-GAPPED</span>
+      </div>
+
+      <h1 class="intro-hero-title">Sovereign Digital Forensics Intelligence</h1>
+      <p class="intro-subtitle">
+        Deterministic multi-agent reasoning, sub-millisecond knowledge graphs, and air-gapped forensic verification. Zero cloud dependencies. Zero hallucinated claims.
+      </p>
+
+      <!-- Live Case Quick Stats Bar -->
+      <div class="intro-stats-bar">
+        <div class="intro-stat-unit">
+          <div class="stat-num">28 <span>ITEMS</span></div>
+          <div class="stat-lbl">REGISTERED EVIDENCE ARTIFACTS</div>
+        </div>
+        <div class="intro-stat-unit">
+          <div class="stat-num">412 <span>EVENTS</span></div>
+          <div class="stat-lbl">NORMALIZED TIMELINE ENTRIES</div>
+        </div>
+        <div class="intro-stat-unit">
+          <div class="stat-num">100% <span>PASS</span></div>
+          <div class="stat-lbl">SHA-256 DIGEST VERIFICATION</div>
+        </div>
+        <div class="intro-stat-unit">
+          <div class="stat-num">0% <span>LEAKS</span></div>
+          <div class="stat-lbl">LOCAL AIR-GAPPED EXECUTION</div>
+        </div>
+      </div>
+
+      <!-- Hero Interactive 3D Controls -->
+      <div class="intro-actions-row">
+        <button id="shatterMonolithBtn" class="surge-btn">
+          <span>SHATTER FORENSIC MONOLITH &rarr;</span>
+        </button>
+
+        <button id="pulseBlockBtn" class="bw-btn" style="border-color: rgba(0, 242, 254, 0.4); color: var(--color-cyan);">
+          <span>INJECT FORENSIC PULSE</span>
+        </button>
+
+        <button id="toggleWireframeBtn" class="bw-btn">
+          <span>WIREFRAME</span>
+        </button>
+
+        <a href="#" data-open-modal="architecture" class="bw-btn" style="text-decoration: none;">
+          <span>SYSTEM TOPOLOGY</span>
+        </a>
+      </div>
+
+      <div class="scroll-indicator-wrap" id="scrollIndicator">
+        <div class="mouse-scroll-icon">
+          <div class="mouse-wheel"></div>
+        </div>
+        <span class="scroll-label">SCROLL DOWN TO ENTER FORENSIC NEXUS</span>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 01: 14-AGENT DETERMINISTIC PIPELINE & ROSTER -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section" id="section-agents">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">01</span>
+          <span>MULTI-AGENT ORCHESTRATION</span>
+        </div>
+        <h2 class="level-title">14-Agent Deterministic <span>Hybrid Hub</span></h2>
+        <p class="level-desc">
+          Unlike standard black-box AI models that hallucinate claims during investigations, Forensic Atlas orchestrates <strong>14 deterministic specialist agents</strong> grounded in strict evidence citation rules: <strong>Cite-or-Drop</strong>.
+        </p>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Specialist Roster</div>
+            <div class="spec-val cyan">14 Deterministic Agents</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Citation Policy</div>
+            <div class="spec-val green">Strict Cite-or-Drop</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Local Neural Core</div>
+            <div class="spec-val">Qwen 3.5 (1.28 GB Q4_K_M)</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Execution Mode</div>
+            <div class="spec-val green">100% Air-Gapped / Offline</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; display: flex; gap: 10px;">
+          <a href="#" data-open-modal="agentspecs" class="surge-btn">
+            <span>EXPLORE 14-AGENT SPECS &rarr;</span>
+          </a>
+          <a href="cases.html" class="bw-btn" style="text-decoration: none;">
+            <span>LAUNCH DASHBOARD &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+              <span>Deterministic Specialist Roster</span>
+            </div>
+            <span class="stage-status-indicator green">ACTIVE PIPELINE</span>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="agent-filter-tabs">
+            <button class="agent-tab-btn active" data-filter="ALL">ALL (14)</button>
+            <button class="agent-tab-btn" data-filter="CROSS-LAYER">CROSS-LAYER</button>
+            <button class="agent-tab-btn" data-filter="TIMELINE">TIMELINE</button>
+            <button class="agent-tab-btn" data-filter="MEDIA">MEDIA / DEEPFAKE</button>
+            <button class="agent-tab-btn" data-filter="GRAPH">FALKORDB</button>
+          </div>
+
+          <!-- Dynamic Agent Grid -->
+          <div class="agents-grid" id="agentsGrid">
+            <!-- Populated via JavaScript -->
+          </div>
+
+          <!-- Live Case Brief Simulator Console -->
+          <div class="agent-sim-box">
+            <div class="sim-header">
+              <span>LIVE CASE BRIEF EXECUTION SIMULATOR</span>
+              <button id="runAgentSimBtn" class="surge-btn" style="padding: 4px 10px; font-size: 10px;">
+                <span>SIMULATE CASE SYNTHESIS &rarr;</span>
+              </button>
+            </div>
+            <div class="sim-console-stream" id="simConsoleStream">
+              <div class="sim-line">
+                <span class="sim-time">[00:00.00]</span>
+                <span class="sim-tag cyan">READY</span>
+                <span>Case Orchestrator initialized. Waiting for synthesis trigger...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 02: FALKORDB 3D KNOWLEDGE GRAPH & ENTITY NEXUS -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section wide-section" id="section-graph">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">02</span>
+          <span>GRAPH PERSISTENCE &amp; ENTITY INTELLIGENCE</span>
+        </div>
+        <h2 class="level-title">FalkorDB Sub-Millisecond <span>Graph Nexus</span></h2>
+        <p class="level-desc">
+          Cybercrime investigations are graphs of authenticated human identities, compromised sessions, workstations, and exfiltrated payloads. FalkorDB delivers <strong>sub-millisecond Cypher traversals</strong> across millions of forensic nodes with strict per-case container persistence.
+        </p>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Graph Persistence</div>
+            <div class="spec-val cyan">Dedicated FalkorDB (:6380)</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Query Path Latency</div>
+            <div class="spec-val green">&lt; 4 ms Sub-Second</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Ontology Classes</div>
+            <div class="spec-val">Entities, Episodes, Runs, Handoffs</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Query Security</div>
+            <div class="spec-val green">Bounded Bounded Paths Only</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; display: flex; gap: 10px;">
+          <a href="http://127.0.0.1:3001" target="_blank" class="surge-btn">
+            <span>OPEN FALKORDB BROWSER (:3001) &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+              <span>FalkorDB Case Entity Topology &bull; Click Node to Inspect</span>
+            </div>
+            <span class="stage-status-indicator cyan">FALKORDB CONNECTED</span>
+          </div>
+
+          <div class="graph-stage-wrapper">
+            <!-- Cypher Query Presets -->
+            <div class="graph-query-presets">
+              <button id="cypherExfilPathBtn" class="cypher-btn active">
+                <span>MATCH EXFILTRATION PATH &rarr;</span>
+              </button>
+              <button id="cypherLateralBtn" class="cypher-btn">
+                <span>LATERAL MOVEMENT (HOST &harr; SESSION)</span>
+              </button>
+              <button id="cypherAllNodesBtn" class="cypher-btn">
+                <span>SHOW ALL ENTITIES</span>
+              </button>
+            </div>
+
+            <!-- Interactive Graph Canvas -->
+            <div class="graph-canvas-container">
+              <canvas id="graphInteractiveCanvas"></canvas>
+              <div class="graph-canvas-overlay">
+                <span>FALKORDB GRAPH ENGINE:</span> Case DF-24-017 (Northstar Review)
+              </div>
+            </div>
+
+            <!-- Entity Inspector Feedback Panel -->
+            <div class="entity-inspect-panel">
+              <div class="entity-info-col">
+                <span class="entity-lbl">SELECTED ENTITY</span>
+                <span class="entity-val" id="insEntityName">archive_northstar.tar.gz</span>
+              </div>
+              <div class="entity-info-col">
+                <span class="entity-lbl">CLASS / DOMAIN</span>
+                <span class="entity-val" id="insEntityType">Exfiltrated Target Artifact</span>
+              </div>
+              <div class="entity-info-col">
+                <span class="entity-lbl">FORENSIC STATUS</span>
+                <span class="entity-val crimson" id="insEntityStatus">EXFILTRATION SUSPECT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 03: DEEPFAKE LABORATORY & ACOUSTIC FORENSICS -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section" id="section-deepfake">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">03</span>
+          <span>MULTIMEDIA INTEGRITY &amp; ADVISORY SCREENING</span>
+        </div>
+        <h2 class="level-title">Deepfake Lab &amp; <span>Acoustic Waveforms</span></h2>
+        <p class="level-desc">
+          Screen evidentiary audio and video against synthetic voice clones, deepfake manipulation, and container tampering. Powered by <strong>windowed AASIST-L acoustic screening</strong> and <strong>measured PCM waveforms</strong> with strict forensic boundaries.
+        </p>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Audio Screening Model</div>
+            <div class="spec-val cyan">AASIST-L Windowed ResNet</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Waveform Resolution</div>
+            <div class="spec-val green">Min / Max / RMS PCM</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Container Forensics</div>
+            <div class="spec-val">FFprobe Stream Muxing &amp; Codecs</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Evidence Policy</div>
+            <div class="spec-val amber">Advisory — Never Replaces Examiner</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <a href="workspace.html?case=DF-24-017#deepfake" class="surge-btn">
+            <span>LAUNCH DEEPFAKE LAB WORKFLOW &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00ff9d" stroke-width="2">
+                <path d="M12 2v20M17 5v14M7 8v8M2 11v2M22 11v2"></path>
+              </svg>
+              <span>Acoustic Waveform &amp; Anomaly Scanner</span>
+            </div>
+            <span class="stage-status-indicator green">SPECTRAL SCAN ARMED</span>
+          </div>
+
+          <div class="audio-stage-wrapper">
+            <!-- Sample Audio Picker Buttons -->
+            <div class="audio-sample-picker">
+              <button class="audio-sample-btn active" data-sample="sample-a">
+                <strong>SAMPLE A: Lead Examiner</strong>
+                <span>Natural Human Dictation</span>
+              </button>
+              <button class="audio-sample-btn" data-sample="sample-b">
+                <strong>SAMPLE B: Voice Clone</strong>
+                <span>Synthesized AI Spoof (TTS)</span>
+              </button>
+              <button class="audio-sample-btn" data-sample="sample-c">
+                <strong>SAMPLE C: Wiretap Audio</strong>
+                <span>Container Splice Anomaly</span>
+              </button>
+            </div>
+
+            <!-- Waveform Canvas Box -->
+            <div class="waveform-view-card">
+              <div class="waveform-canvas-box">
+                <canvas id="waveformCanvas"></canvas>
+                <div class="waveform-laser-scan"></div>
+              </div>
+
+              <!-- Anomaly Gauge & Metadata Breakdown -->
+              <div class="deepfake-results-row">
+                <div class="score-circular-gauge">
+                  <svg class="score-circle-svg" viewBox="0 0 80 80">
+                    <circle class="score-circle-bg" cx="40" cy="40" r="32"></circle>
+                    <circle class="score-circle-fill" id="scoreCircleFill" cx="40" cy="40" r="32"></circle>
+                  </svg>
+                  <div class="score-number" id="spoofScoreVal">0.038</div>
+                  <div class="score-desc-tag" id="spoofScoreDesc">AUTHENTIC HUMAN</div>
+                </div>
+
+                <div class="metadata-forensic-table">
+                  <div class="meta-row">
+                    <span class="meta-key">CONTAINER CODEC:</span>
+                    <span class="meta-val" id="metaCodecVal">AAC-LC (Stereo)</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-key">SAMPLING RATE:</span>
+                    <span class="meta-val" id="metaRateVal">44,100 Hz</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-key">ACOUSTIC PROVENANCE:</span>
+                    <span class="meta-val" id="metaProvVal">Observed Mobile Dictation (Hardware Mic)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 04: CRYPTOGRAPHIC EVIDENCE VAULT & HASHING TERMINAL -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section" id="section-vault">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">04</span>
+          <span>IMMUTABLE EVIDENCE CHAIN OF CUSTODY</span>
+        </div>
+        <h2 class="level-title">Cryptographic Evidence <span>Vault</span></h2>
+        <p class="level-desc">
+          Evidence is only valid when provenance is indisputable. Forensic Atlas calculates <strong>FIPS SHA-256 byte digests</strong> immediately on intake, binds findings into an append-only SQLite3 audit ledger, and seals every examiner report with immutable cryptographic hashes.
+        </p>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Digest Algorithm</div>
+            <div class="spec-val cyan">SHA-256 Web Crypto Engine</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Ledger Persistence</div>
+            <div class="spec-val green">Append-Only SQLite3 WAL</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Originals Protection</div>
+            <div class="spec-val">Immutable Evidence Storage</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Report Envelopes</div>
+            <div class="spec-val green">Verifiable Content SHA-256</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; display: flex; gap: 10px;">
+          <a href="workspace.html?case=DF-24-017" class="surge-btn">
+            <span>OPEN CASE WORKSPACE &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>Cryptographic Evidence Vault &bull; Live SHA-256 Hashing Terminal</span>
+            </div>
+            <span class="stage-status-indicator green">FIPS SHA-256 ARMED</span>
+          </div>
+
+          <div class="vault-stage-wrapper">
+            <!-- Sample Evidence File Cards -->
+            <div class="sample-files-strip">
+              <div class="evidence-file-card active">
+                <div class="file-icon-box">RAM</div>
+                <div class="file-info">
+                  <span class="file-name">sample_memory_dump.raw</span>
+                  <span class="file-meta">4.29 GB &bull; Volatile Memory</span>
+                </div>
+              </div>
+
+              <div class="evidence-file-card">
+                <div class="file-icon-box">PCAP</div>
+                <div class="file-info">
+                  <span class="file-name">pcap_capture_eng_vlan.pcap</span>
+                  <span class="file-meta">812.4 MB &bull; Network Traffic</span>
+                </div>
+              </div>
+
+              <div class="evidence-file-card">
+                <div class="file-icon-box">MP4</div>
+                <div class="file-info">
+                  <span class="file-name">cctv_server_room_vault.mp4</span>
+                  <span class="file-meta">1.45 GB &bull; Facility Video</span>
+                </div>
+              </div>
+
+              <div class="evidence-file-card">
+                <div class="file-icon-box">LOG</div>
+                <div class="file-info">
+                  <span class="file-name">okta_system_audit.log</span>
+                  <span class="file-meta">18.2 MB &bull; Auth Provider</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Real-Time SHA-256 Hashing Terminal -->
+            <div class="hash-terminal-box">
+              <div class="hash-terminal-header">
+                <span class="terminal-title">
+                  <span class="pulse-green-dot"></span>
+                  CRYPTOGRAPHIC DIGEST &amp; AUDIT RECEIPT
+                </span>
+                <span id="activeIdempToken" style="color: var(--color-cyan); font-size: 10px;">IDEMP-E89A02B19F4</span>
+              </div>
+
+              <div class="hash-output-display">
+                <div class="hash-row">
+                  <span class="hash-row-label">TARGET ARTIFACT:</span>
+                  <span id="activeHashFilename" style="color: #fff; font-weight: 700;">sample_memory_dump.raw (4.29 GB)</span>
+                </div>
+
+                <div class="hash-row">
+                  <span class="hash-row-label">FIPS 180-4 SHA-256 HEX DIGEST:</span>
+                  <span class="hash-string" id="sha256HashOutput">COMPUTING HASH...</span>
+                </div>
+              </div>
+
+              <div class="audit-receipt-strip">
+                <span>TIMESTAMP (UTC): <strong id="activeHashTimestamp">2026-10-18T21:40:00.000Z</strong></span>
+                <span>AUDIT STATUS: <strong class="green">APPENDED TO SUTRAM.SQLITE3</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL: ARCHITECTURAL TOPOLOGY DEEP DIVE -->
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="architectureModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-badge-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div>
+            <h2>Forensic Atlas Architecture Topology</h2>
+            <span class="modal-subtitle">Consolidated Local System &bull; Air-Gapped Verification</span>
+          </div>
+        </div>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p>
+          Forensic Atlas is structured for zero external data egress. All evidence inspection, graph traversals, neural brief synthesis, and report generation execute locally over bounded endpoints.
+        </p>
+
+        <div class="modal-architecture-grid">
+          <div class="arch-block">
+            <span class="arch-title">FASTAPI BACKEND (:8100)</span>
+            <p class="arch-desc">
+              39 verified routes, SQLite read models, deterministic agent orchestration, and cited report synthesis.
+            </p>
+          </div>
+
+          <div class="arch-block">
+            <span class="arch-title">FALKORDB GRAPH (:6380)</span>
+            <p class="arch-desc">
+              Dedicated per-case graph persistence mounted in Docker container. Sub-millisecond Cypher entity queries.
+            </p>
+          </div>
+
+          <div class="arch-block">
+            <span class="arch-title">LOCAL QWEN MODEL (:8111)</span>
+            <p class="arch-desc">
+              llama.cpp server running pinned Qwen 3.5-2B Q4_K_M weights. Extracts verified facts; 0% cloud leaks.
+            </p>
+          </div>
+        </div>
+
+        <h3>NIST Standards Compliance</h3>
+        <p>
+          Adheres to <strong>NIST-GFE</strong> (Guardians of Forensic Evidence) and <strong>NISTIR-8387</strong> (Digital Evidence Preservation). Media detectors are strictly advisory and never issue automated judicial verdicts.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <!-- MODAL: 14-AGENT DETAILED SPECIFICATION ROSTER -->
+  <!-- ════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="specsModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-badge-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <div>
+            <h2>Deterministic Specialist Agent Roster</h2>
+            <span class="modal-subtitle">14 Deterministic Agents &bull; Strict Source Citation Policy</span>
+          </div>
+        </div>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p>
+          Every agent operates under a strict proof boundary: <strong>Grounding Before Synthesis</strong>. No agent is permitted to fabricate ungrounded entities or claims.
+        </p>
+
+        <div class="modal-architecture-grid">
+          <div class="arch-block">
+            <span class="arch-title">1. Case Orchestrator</span>
+            <p class="arch-desc">Synthesizes evidence, graph paths, and media metadata into cited examiner briefs.</p>
+          </div>
+
+          <div class="arch-block">
+            <span class="arch-title">2. Cited Case Summary</span>
+            <p class="arch-desc">Local Qwen 3.5 selects fact cards; verifier discards any claim lacking artifact proof.</p>
+          </div>
+
+          <div class="arch-block">
+            <span class="arch-title">3. Graph Context Agent</span>
+            <p class="arch-desc">Traverses FalkorDB entity paths (Account &rarr; Device &rarr; File &rarr; Network C2).</p>
+          </div>
+
+          <div class="arch-block">
+            <span class="arch-title">4. Timeline Normalizer</span>
+            <p class="arch-desc">Converts divergent system logs to UTC only when timezone offsets are explicit.</p>
+          </div>
+
+          <div class="arch-block">
+            <span class="arch-title">5. Review Triage</span>
+            <p class="arch-desc">Dependency-driven review sequence scoring exfiltration and credential risk.</p>
+          </div>
+
+          <div class="arch-block">
+            <span class="arch-title">6. Media Context</span>
+            <p class="arch-desc">FFprobe container inspection: codecs, stream timestamps, and muxing signatures.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SITE FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <span>FORENSIC ATLAS &bull; SUTRAM PLATFORM</span>
+      <span>&bull;</span>
+      <span>AIR-GAPPED SOVEREIGN INVESTIGATION ARCHITECTURE</span>
+    </div>
+
+    <div class="footer-right">
+      <a href="cases.html" class="footer-link">Cases Library</a>
+      <a href="workspace.html?case=DF-24-017" class="footer-link">Case Workspace</a>
+      <a href="http://127.0.0.1:3001" target="_blank" class="footer-link">FalkorDB Browser (:3001)</a>
+      <a href="http://127.0.0.1:8111/health" target="_blank" class="footer-link">Model Health (:8111)</a>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript Engine -->
+  <script src="frontpage.js"></script>
+</body>
+</html>

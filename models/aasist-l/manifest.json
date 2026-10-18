@@ -1,0 +1,52 @@
+{
+  "model": "AASIST-L",
+  "revision": "a04c9863f63d44471dde8a6abcb3b082b07cd1d1",
+  "license": "MIT",
+  "source": "https://github.com/clovaai/aasist",
+  "files": [
+    {
+      "file": "architecture.py",
+      "sha256": "9e0d3e80937dd0577beea7883098465a479da23a198ebc0d712abcc59b0bec50",
+      "sourceUrl": "https://raw.githubusercontent.com/clovaai/aasist/a04c9863f63d44471dde8a6abcb3b082b07cd1d1/models/AASIST.py",
+      "byteSize": 18960
+    },
+    {
+      "file": "weights.pth",
+      "sha256": "814331d088032bb4c3fa61cc014789eadeed464209dd094ab3a2dd6ffbdce27a",
+      "sourceUrl": "https://raw.githubusercontent.com/clovaai/aasist/a04c9863f63d44471dde8a6abcb3b082b07cd1d1/models/weights/AASIST-L.pth",
+      "byteSize": 426428
+    },
+    {
+      "file": "config.json",
+      "sha256": "9e2e2610b2260b421bf2083646dde4747a6a5cdd138015066d83bc61b6b214cf",
+      "sourceUrl": "https://raw.githubusercontent.com/clovaai/aasist/a04c9863f63d44471dde8a6abcb3b082b07cd1d1/config/AASIST-L.conf",
+      "byteSize": 999
+    },
+    {
+      "file": "LICENSE",
+      "sha256": "da2e79b8592d166ef505224300968b80ebe1e4c217c43b94a5ec627d81cd4142",
+      "sourceUrl": "https://raw.githubusercontent.com/clovaai/aasist/a04c9863f63d44471dde8a6abcb3b082b07cd1d1/LICENSE",
+      "byteSize": 1064
+    },
+    {
+      "file": "NOTICE",
+      "sha256": "70edb07f04ddc88e7155d6e826495e5ef99c3b1f0bd4e1b7fa35897b3854dbd0",
+      "sourceUrl": "https://raw.githubusercontent.com/clovaai/aasist/a04c9863f63d44471dde8a6abcb3b082b07cd1d1/NOTICE",
+      "byteSize": 4231
+    },
+    {
+      "file": "UPSTREAM-README.md",
+      "sha256": "409c7ce52ce20d3e13adab731e52ce65a153fb0aed5ac6d5434e1661aa9cb253",
+      "sourceUrl": "https://raw.githubusercontent.com/clovaai/aasist/a04c9863f63d44471dde8a6abcb3b082b07cd1d1/README.md",
+      "byteSize": 5982
+    }
+  ],
+  "sampleRate": 16000,
+  "windowSamples": 64600,
+  "scope": "Experimental audio anti-spoof screening only; no visual detection or local accuracy validation.",
+  "classOrder": [
+    "spoof",
+    "bonafide"
+  ],
+  "trainedByUs": false
+}

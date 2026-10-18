@@ -1,0 +1,13 @@
+# OS Metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & temp
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Node / Package managers (if added later)
+node_modules/
+.vercel

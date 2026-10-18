@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forensic Atlas — Case Selection Library</title>
+  <meta name="description" content="Explore digital forensics test cases across identity, endpoint, network, and audio-visual media in Forensic Atlas.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Cyber Styling -->
+  <link rel="stylesheet" href="frontpage.css">
+  
+  <style>
+    .case-library-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 110px 24px 60px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .library-header {
+      margin-bottom: 36px;
+    }
+
+    .library-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid var(--border-glow);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-cyan);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .library-title {
+      font-size: 38px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .library-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    .cases-grid-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .case-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .case-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(0, 242, 254, 0.14);
+    }
+
+    .case-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .case-id-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(0, 242, 254, 0.12);
+      border: 1px solid var(--border-glow);
+      color: var(--color-cyan);
+    }
+
+    .case-status-badge {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .case-status-badge.active {
+      background: rgba(0, 255, 157, 0.12);
+      border: 1px solid var(--border-emerald-glow);
+      color: var(--color-emerald);
+    }
+
+    .case-status-badge.training {
+      background: rgba(255, 183, 3, 0.12);
+      border: 1px solid rgba(255, 183, 3, 0.3);
+      color: var(--color-amber);
+    }
+
+    .case-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .case-summary {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .case-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .case-nav-btn {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--color-blue);
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      transition: var(--transition-fast);
+    }
+
+    .case-nav-btn:hover {
+      color: #fff;
+      background: rgba(0, 242, 254, 0.2);
+      border-color: var(--color-cyan);
+    }
+
+    .coverage-notice-callout {
+      margin-top: 40px;
+      padding: 20px 24px;
+      border-radius: 8px;
+      background: rgba(12, 18, 30, 0.7);
+      border-left: 4px solid var(--color-amber);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .coverage-notice-callout strong {
+      color: var(--color-amber);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cyber Grid & Scanline Layers -->
+  <div class="cyber-grid"></div>
+  <div class="cyber-scanlines"></div>
+  <div class="vignette"></div>
+
+  <!-- ── FIXED TOP NAVIGATION ── -->
+  <header class="top-nav">
+    <a href="index.html" class="brand-block">
+      <div class="brand-icon">
+        <img src="forensic_atlas_badge.jpg" alt="Forensic Atlas Badge">
+      </div>
+      <div class="brand-text">
+        <h1>Forensic <span>Atlas</span></h1>
+        <div class="sub">CASE SELECTION LIBRARY</div>
+      </div>
+    </a>
+
+    <nav class="nav-modules-strip">
+      <a href="index.html" class="nav-module-link">
+        <span>&larr; 00. 3D Genesis</span>
+      </a>
+      <a href="cases.html" class="nav-module-link active">
+        <span>Cases Library</span>
+      </a>
+      <a href="workspace.html?case=DF-24-017" class="nav-module-link highlight">
+        <span>Open Case DF-24-017 &rarr;</span>
+      </a>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="index.html" class="bw-btn" style="text-decoration: none;">
+        <span>RETURN TO HOME &rarr;</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ── CASE LIBRARY CONTENT ── -->
+  <main class="case-library-container">
+    <div class="library-header">
+      <div class="library-badge">
+        <span class="intro-dot"></span>
+        <span>VERIFIED FORENSIC EVIDENCE COLLECTIONS</span>
+      </div>
+      <h1 class="library-title">Select an Investigation Workspace</h1>
+      <p class="library-desc">
+        Choose a case below to launch into the full forensic workspace. All evidence originals, normalized timeline events, and FalkorDB knowledge graph entities are preserved with cryptographic hashes.
+      </p>
+    </div>
+
+    <div class="cases-grid-layout">
+      <!-- Case 1: Northstar -->
+      <article class="case-card">
+        <div>
+          <div class="case-card-header">
+            <span class="case-id-tag">DF-24-017</span>
+            <span class="case-status-badge active">ACTIVE REVIEW</span>
+          </div>
+          <h2 class="case-name" style="margin-top: 10px;">Northstar Workspace Access Review</h2>
+          <p class="case-summary" style="margin-top: 8px;">
+            Suspected unauthorized archive exfiltration across Okta identity, macOS/Windows endpoints, network firewalls, and collaboration sources.
+          </p>
+        </div>
+
+        <div>
+          <a href="workspace.html?case=DF-24-017" class="surge-btn" style="width: 100%; justify-content: center; margin-bottom: 12px; text-decoration: none;">
+            <span>LAUNCH WORKSPACE &rarr;</span>
+          </a>
+          <div class="case-nav-links">
+            <a href="workspace.html?case=DF-24-017#overview" class="case-nav-btn">Overview</a>
+            <a href="workspace.html?case=DF-24-017#evidence" class="case-nav-btn">Evidence (28)</a>
+            <a href="workspace.html?case=DF-24-017#timeline" class="case-nav-btn">Timeline</a>
+            <a href="workspace.html?case=DF-24-017#entities" class="case-nav-btn">Entity Graph</a>
+            <a href="workspace.html?case=DF-24-017#deepfake" class="case-nav-btn">Deepfake Lab</a>
+            <a href="workspace.html?case=DF-24-017#reports" class="case-nav-btn">Cited Reports</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Case 2: Nitroba -->
+      <article class="case-card">
+        <div>
+          <div class="case-card-header">
+            <span class="case-id-tag">PUBLIC-NITROBA-2008</span>
+            <span class="case-status-badge training">TRAINING PACK</span>
+          </div>
+          <h2 class="case-name" style="margin-top: 10px;">Nitroba University Training Corpus</h2>
+          <p class="case-summary" style="margin-top: 8px;">
+            Preserved network scenario with PCAP packet capture intake, workstation screenshots, cryptographic hashes, and disk image metadata.
+          </p>
+        </div>
+
+        <div>
+          <a href="workspace.html?case=PUBLIC-NITROBA-2008" class="surge-btn" style="width: 100%; justify-content: center; margin-bottom: 12px; text-decoration: none;">
+            <span>LAUNCH WORKSPACE &rarr;</span>
+          </a>
+          <div class="case-nav-links">
+            <a href="workspace.html?case=PUBLIC-NITROBA-2008#evidence" class="case-nav-btn">Evidence</a>
+            <a href="workspace.html?case=PUBLIC-NITROBA-2008#media" class="case-nav-btn">Media Files</a>
+            <a href="workspace.html?case=PUBLIC-NITROBA-2008#agents" class="case-nav-btn">Agent Hub</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Case 3: Public Media Tests -->
+      <article class="case-card">
+        <div>
+          <div class="case-card-header">
+            <span class="case-id-tag">PUBLIC-MEDIA-TESTS</span>
+            <span class="case-status-badge active">MEDIA SUITE</span>
+          </div>
+          <h2 class="case-name" style="margin-top: 10px;">Video, Image &amp; Natural Speech Suite</h2>
+          <p class="case-summary" style="margin-top: 8px;">
+            Four MP4/WebM surveillance videos, JPEG forensics, six speech WAVs with FFprobe stream metadata, audio playback, and measured PCM waveforms.
+          </p>
+        </div>
+
+        <div>
+          <a href="workspace.html?case=PUBLIC-MEDIA-TESTS" class="surge-btn" style="width: 100%; justify-content: center; margin-bottom: 12px; text-decoration: none;">
+            <span>LAUNCH WORKSPACE &rarr;</span>
+          </a>
+          <div class="case-nav-links">
+            <a href="workspace.html?case=PUBLIC-MEDIA-TESTS#evidence" class="case-nav-btn">Evidence</a>
+            <a href="workspace.html?case=PUBLIC-MEDIA-TESTS#media" class="case-nav-btn">Acoustic Waves</a>
+            <a href="workspace.html?case=PUBLIC-MEDIA-TESTS#deepfake" class="case-nav-btn">Screening</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Case 4: Deepfake Audio -->
+      <article class="case-card">
+        <div>
+          <div class="case-card-header">
+            <span class="case-id-tag">PUBLIC-DEEPFAKE-AUDIO</span>
+            <span class="case-status-badge training">BENCHMARK</span>
+          </div>
+          <h2 class="case-name" style="margin-top: 10px;">Published Synthetic Speech Pack</h2>
+          <p class="case-summary" style="margin-top: 8px;">
+            Publisher-labeled MelGAN originals and PCM derivatives for AASIST-L acoustic anomaly screening, hash verification, and advisory forensic reports.
+          </p>
+        </div>
+
+        <div>
+          <a href="workspace.html?case=PUBLIC-DEEPFAKE-AUDIO" class="surge-btn" style="width: 100%; justify-content: center; margin-bottom: 12px; text-decoration: none;">
+            <span>LAUNCH WORKSPACE &rarr;</span>
+          </a>
+          <div class="case-nav-links">
+            <a href="workspace.html?case=PUBLIC-DEEPFAKE-AUDIO#evidence" class="case-nav-btn">Evidence</a>
+            <a href="workspace.html?case=PUBLIC-DEEPFAKE-AUDIO#deepfake" class="case-nav-btn">Acoustic Score</a>
+            <a href="workspace.html?case=PUBLIC-DEEPFAKE-AUDIO#reports" class="case-nav-btn">Cited Reports</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- NIST Forensic Restraint Notice -->
+    <div class="coverage-notice-callout">
+      <strong>NIST-GFE &amp; FORENSIC BOUNDARY NOTICE:</strong><br>
+      The local model provides extractive, verified summaries grounded exclusively in registered artifact IDs. Deepfake screening outputs are advisory indicators and never substitute for an authorized examiner's formal analysis. All evidence files maintain immutable cryptographic provenance.
+    </div>
+  </main>
+
+  <!-- ── SITE FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <span>FORENSIC ATLAS &bull; CASE LIBRARY</span>
+      <span>&bull;</span>
+      <span>AIR-GAPPED SOVEREIGN INVESTIGATION ARCHITECTURE</span>
+    </div>
+    <div class="footer-right">
+      <a href="index.html" class="footer-link">&larr; 3D Landing Page</a>
+      <a href="workspace.html?case=DF-24-017" class="footer-link">Case Workspace</a>
+    </div>
+  </footer>
+
+</body>
+</html>

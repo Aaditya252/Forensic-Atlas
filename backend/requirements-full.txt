@@ -1,0 +1,8 @@
+# Full application including experimental AASIST-L audio screening.
+# Versions installed and verified on the source laptop.
+fastapi==0.136.1
+uvicorn==0.46.0
+falkordb==1.7.1
+python-multipart==0.0.27
+numpy==2.2.5
+torch==2.11.0

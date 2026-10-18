@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111b2d" />
+    <title>Forensic Atlas — Forensic case workspace</title>
+    <link rel="stylesheet" href="./entity-map.css" />
+    <script>
+      try {
+        if (localStorage.getItem('sutram-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="./styles.css?v=20261018-phase7" />
+  </head>
+  <body>
+    <a class="skip-link" href="#pageContent">Skip to case workspace</a>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#overview" aria-label="Forensic Atlas home">
+          <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5 27 9.8v12.4L16 28.5 5 22.2V9.8L16 3.5Z"/><path d="M10.5 16h11M16 10.5v11"/></svg></span>
+          <span class="brand-copy"><strong>Forensic Atlas</strong><small>FORENSIC WORKSPACE</small></span>
+        </a>
+
+        <div class="workspace-switcher">
+          <span class="workspace-dot"></span>
+          <span><small>WORKSPACE</small><strong>Northstar Lab</strong></span>
+          <a href="./cases.html" aria-label="Open case library" title="Choose a test case" class="chevron">↗</a>
+        </div>
+
+        <div class="nav-label">INVESTIGATE</div>
+        <nav class="primary-nav" aria-label="Main navigation">
+          <a class="nav-item active" href="#overview" data-page="overview"><span class="nav-icon" data-icon="overview"></span><span>Case overview</span><span class="nav-count">01</span></a>
+          <a class="nav-item" href="#evidence" data-page="evidence"><span class="nav-icon" data-icon="evidence"></span><span>Evidence library</span><span class="nav-count">28</span></a>
+          <a class="nav-item" href="#coverage" data-page="coverage"><span class="nav-icon" data-icon="coverage"></span><span>Source coverage</span><span class="nav-alert"></span></a>
+          <a class="nav-item" href="#timeline" data-page="timeline"><span class="nav-icon" data-icon="timeline"></span><span>Timeline</span></a>
+          <a class="nav-item" href="#entities" data-page="entities"><span class="nav-icon" data-icon="entities"></span><span>Entity graph</span></a>
+          <a class="nav-item" href="#agents" data-page="agents"><span class="nav-icon" data-icon="entities"></span><span>Hybrid agent hub</span><span class="nav-alert"></span></a>
+          <a class="nav-item" href="#media" data-page="media"><span class="nav-icon" data-icon="media"></span><span>Media analysis</span></a>
+          <a class="nav-item" href="#deepfake" data-page="deepfake"><span class="nav-icon" data-icon="deepfake"></span><span>Deepfake lab</span><span class="nav-alert"></span></a>
+          <a class="nav-item" href="#review" data-page="review"><span class="nav-icon" data-icon="review"></span><span>AI review queue</span><span class="review-count">5</span></a>
+        </nav>
+
+        <div class="nav-label nav-label-spaced">CASE OPERATIONS</div>
+        <nav class="primary-nav" aria-label="Case operations">
+          <a class="nav-item" href="#acquisitions" data-page="acquisitions"><span class="nav-icon" data-icon="acquisitions"></span><span>Acquisition jobs</span></a>
+          <a class="nav-item" href="#reports" data-page="reports"><span class="nav-icon" data-icon="reports"></span><span>Reports</span></a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-status"><span class="status-pulse"></span><span><strong>Workspace data source</strong><small id="dataSourceStatus">Connecting…</small></span></div>
+          <a class="nav-item settings-link" href="#settings" data-page="settings"><span class="nav-icon" data-icon="settings"></span><span>Workspace settings</span></a>
+          <div class="profile-row"><span class="avatar">AR</span><span class="profile-copy"><strong>Alex Rivera</strong><small>Lead examiner</small></span><button class="icon-button profile-menu" aria-label="Profile menu">···</button></div>
+        </div>
+      </aside>
+
+      <main class="main-shell">
+        <header class="topbar">
+          <button class="mobile-menu icon-button" id="mobileMenu" aria-label="Open navigation"><span data-icon="menu"></span></button>
+          <div class="breadcrumbs"><span>Cases</span><span class="crumb-slash">/</span><strong>DF-24-017</strong><span class="case-state"><i></i><span id="caseStateLabel">ACTIVE REVIEW</span></span></div>
+          <div class="topbar-actions">
+            <button class="button primary" type="button" data-test-upload aria-label="Add test files" title="Upload your own test files">+ <span class="add-test-label">Add test files</span></button>
+            <div class="global-search-wrap"><label class="global-search"><span data-icon="search"></span><input id="globalSearch" type="search" placeholder="Search this case…" aria-label="Search this case" aria-controls="searchResults" aria-expanded="false" autocomplete="off" /><kbd>Ctrl K</kbd></label><div class="search-results" id="searchResults" role="listbox" aria-label="Case search results" hidden></div></div>
+            <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-icon moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.4A8.6 8.6 0 0 1 8.6 3.8 8.7 8.7 0 1 0 20.2 15.4Z"/></svg><svg class="theme-icon sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button>
+            <button class="icon-button notification-button" data-action="notifications" aria-label="Notifications"><span data-icon="bell"></span><i></i></button>
+            <span class="topbar-divider"></span>
+            <button class="help-button" data-action="help"><span class="help-mark">?</span><span>Help</span></button>
+          </div>
+        </header>
+        <div class="page-wrap" id="pageWrap"><div id="pageContent" aria-live="polite"></div></div>
+      </main>
+    </div>
+    <div id="sidePanelRoot"></div>
+    <div id="modalRoot"></div>
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+    <script src="./runtime-config.js"></script>
+    <script type="module" src="./app.js?v=20261018-phase7"></script>
+  </body>
+</html>

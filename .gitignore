@@ -1,0 +1,26 @@
+# Runtime data, evidence, model binaries and local secrets stay off GitHub.
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+output/
+local-runtime/
+cases/storage/
+cases/graph-data/
+cases/backups/
+cases/public/
+datasets/evaluation/
+*.sqlite3
+*.sqlite3-*
+*.gguf
+*.pth
+*.zip
+*.log
+*.pid
+*.pem
+*.key
+landing-page/.vercel/
