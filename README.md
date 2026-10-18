@@ -62,7 +62,7 @@ python scripts/setup_audio_screen.py
 powershell -ExecutionPolicy Bypass -File scripts/start_forensic_atlas.ps1
 ```
 
-Open **http://127.0.0.1:8100/** for the dashboard or
+Open **http://127.0.0.1:8100/** for the landing page, then choose **Open Workspace** for the live dashboard, or use
 **http://127.0.0.1:8100/cases.html** for the case library. A fresh installation
 seeds the fictional Northstar case. Public case entries require their download
 and import scripts; a source checkout does not include this laptop's cases.

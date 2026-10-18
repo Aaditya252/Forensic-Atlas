@@ -1172,6 +1172,36 @@ def context_memory(case_id: str, limit: int = Query(default=20, ge=1, le=100)):
     return {"data": {"items": items}}
 
 
+# Start at the presentation page, then enter the live case workspace. Preserve
+# existing /?case=... links used by saved bookmarks and the public-site handoff.
+LANDING_ROOT = ROOT.parent / "landing-page"
+
+
+@app.get("/", include_in_schema=False)
+def entry_page(request: Request):
+    if "case" in request.query_params or not LANDING_ROOT.is_dir():
+        return FileResponse(UI_ROOT / "index.html")
+    html = (LANDING_ROOT / "index.html").read_text(encoding="utf-8")
+    for asset in LANDING_ROOT.iterdir():
+        if asset.is_file() and asset.suffix in {".css", ".js", ".jpg", ".png", ".svg"}:
+            for attribute in ("src", "href"):
+                html = html.replace(f'{attribute}="{asset.name}"', f'{attribute}="/landing/{asset.name}"')
+    html = html.replace('href="cases.html" class="nav-module-link highlight"',
+                        'href="/workspace.html?case=DF-24-017#overview" class="nav-module-link highlight"')
+    html = html.replace('href="cases.html"', 'href="/cases.html"')
+    html = html.replace('Explore Demo &rarr;', 'Open Workspace &rarr;')
+    return HTMLResponse(html)
+
+
+@app.get("/workspace.html", include_in_schema=False)
+def workspace_page():
+    return FileResponse(UI_ROOT / "index.html")
+
+
+if LANDING_ROOT.is_dir():
+    app.mount("/landing", StaticFiles(directory=LANDING_ROOT, html=True), name="landing")
+
+
 # The local development server can host its matching frontend on the same origin.
 # API routes above take precedence; production deployments should use a real static host.
 app.mount("/", StaticFiles(directory=UI_ROOT, html=True), name="frontend")
