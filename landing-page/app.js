@@ -177,8 +177,8 @@ function route(){
   if(repository.mode==='api'&&selected==='deepfake'){loadDeepfakePage();if(!deepfakePollTimer)deepfakePollTimer=setInterval(()=>{if(location.hash==='#deepfake'&&!document.hidden)loadDeepfakePage({force:true});},15000);return;}
   if(selected==='agents'){loadAgentHubPage();return;}
   if(repository.mode==='demo'&&selected==='entities'){
-   pageContent.innerHTML=renderApiPage(demoRelationshipPage());
-   pageContent.querySelector('.graph-agent-panel')?.remove();
+   const demoPage=demoRelationshipPage();
+   pageContent.innerHTML=heading('FICTIONAL DEMO / RELATIONSHIP EXPLORER',demoPage.title,demoPage.summary)+renderEntityMap(demoPage.relationshipGraph);
    document.title='Evidence relationship graph — Forensic Atlas';
    window.scrollTo({top:0,behavior:'instant'});return;
   }
