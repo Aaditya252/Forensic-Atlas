@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Install Forensic Atlas · Setup guide</title>
+  <meta name="description" content="What to download and how to start local Qwen, graph memory and audio processing in Forensic Atlas.">
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0c1420;color:#e3edf4}*{box-sizing:border-box}body{margin:0}a{color:#8ae2d1}a:focus-visible,button:focus-visible{outline:3px solid #a8f2e2;outline-offset:4px}main{max-width:1040px;margin:auto;padding:32px 24px 80px}nav{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #2b3c4b;padding-bottom:24px}.eyebrow{color:#8ae2d1;font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-top:48px}h1{font-size:clamp(36px,6vw,64px);line-height:1.08;max-width:800px;margin:16px 0}h2{font-size:26px;margin-top:0}h3{font-size:18px}p,li{line-height:1.7;color:#bdcddc}.intro{max-width:740px;font-size:18px}.choices,.downloads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card,section.step{border:1px solid #2b3c4b;border-radius:16px;padding:26px;background:#111e2c}.choices{margin:32px 0}.badge{font-size:12px;color:#8ae2d1}.step{margin-top:22px}.step-label{font-size:12px;letter-spacing:.12em;color:#8ae2d1;display:block;margin-bottom:12px}.download{border-top:1px solid #2b3c4b;padding-top:12px}.download a{font-weight:650}.note{border-left:3px solid #73d8c4;padding:8px 18px;background:#142735;margin:20px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#08121b;border:1px solid #2b3c4b;border-radius:10px;padding:20px;line-height:1.7;font-size:13px}button,.button{display:inline-block;background:#8ae2d1;color:#0b1c25;border:0;border-radius:7px;padding:10px 16px;font:600 14px system-ui;cursor:pointer;text-decoration:none}details{padding:16px 0;border-top:1px solid #2b3c4b}summary{cursor:pointer;font-weight:600}.foot{margin-top:30px;font-size:13px}@media(max-width:650px){.choices,.downloads{grid-template-columns:1fr}.card,section.step{padding:20px}}
+  </style>
+</head>
+<body><main>
+  <nav><a href="/">FORENSIC ATLAS</a><a href="https://github.com/Aaditya252/Forensic-Atlas">Source & documentation ↗</a></nav>
+  <p class="eyebrow">Get started / Windows x64</p>
+  <h1>Your first case starts here.</h1>
+  <p class="intro">Choose the browser demo or install the live workspace. This guide tells you exactly what to download to run Qwen, graph memory and audio tools on your computer.</p>
+  <div class="choices">
+    <article class="card"><span class="badge">NO DOWNLOADS</span><h2>Explore the demo</h2><p>Browse fictional case data and the relationship explorer. Live model processing and saved evidence require the local application.</p><a href="cases.html">Explore demo cases →</a></article>
+    <article class="card"><span class="badge">FULL LOCAL APPLICATION</span><h2>Run on your computer</h2><p>Install the four tools below, download the project, then run one guided setup command. The current launcher supports Windows x64.</p><a href="#downloads">Show me the downloads ↓</a></article>
+  </div>
+  <section class="step" id="downloads"><span class="step-label">01 / INSTALL THE PREREQUISITES</span><h2>Four tools. Official download links.</h2>
+    <div class="downloads">
+      <div class="download"><h3><a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener">Download Python ↗</a></h3><p>Install a 64-bit Python 3.11+ interpreter. Enable “Add Python to PATH” if the installer offers it. This runs the application and setup scripts.</p></div>
+      <div class="download"><h3><a href="https://git-scm.com/downloads/win" target="_blank" rel="noopener">Download Git for Windows ↗</a></h3><p>Install with command-line access. Git downloads the project source and lets you receive updates.</p></div>
+      <div class="download"><h3><a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="noopener">Download Docker Desktop ↗</a></h3><p>Choose Windows AMD64. Complete its WSL/virtualization setup, reboot if requested, then open Docker Desktop and wait for the Linux engine to run. <a href="https://docs.docker.com/desktop/setup/install/windows-install/">Windows requirements</a>.</p></div>
+      <div class="download"><h3><a href="https://ffmpeg.org/download.html" target="_blank" rel="noopener">Download FFmpeg ↗</a></h3><p>Under Windows builds, follow gyan.dev and choose a release essentials ZIP. Extract it and add the <code>bin</code> folder containing <code>ffmpeg.exe</code> and <code>ffprobe.exe</code> to your user PATH.</p></div>
+    </div>
+    <p class="note">Reopen PowerShell after installation. Keep internet access available for setup. Qwen weights are about 1.28 GB; Python packages, PyTorch, the runtime and Docker images need additional storage. The supplied launcher uses CPU inference and does not require a dedicated GPU.</p>
+    <details><summary>How do I add FFmpeg to PATH?</summary><p>Search Windows for “Edit environment variables for your account.” Choose Path → Edit → New, add the extracted FFmpeg bin folder, and save. Open a new PowerShell window. Device restrictions may require help from your administrator.</p></details>
+  </section>
+  <section class="step"><span class="step-label">02 / CHECK BEFORE DOWNLOADING MODELS</span><h2>Confirm the tools are ready.</h2><p>Open PowerShell and run each command. Each should print version or service information. Docker must show a running server.</p>
+    <pre id="tools">python --version
+git --version
+docker info
+ffmpeg -version
+ffprobe -version</pre><button type="button" data-copy="tools">Copy checks</button>
+  </section>
+  <section class="step"><span class="step-label">03 / DOWNLOAD AND SET UP</span><h2>Let setup fetch the models for you.</h2><p>In PowerShell, open the folder where you want to keep the project, then paste these commands. If you already cloned it, run only the last command from that project folder.</p>
+    <pre id="install">git clone https://github.com/Aaditya252/Forensic-Atlas.git
+cd Forensic-Atlas
+powershell -ExecutionPolicy Bypass -File scripts/setup_local.ps1 -Start</pre><button type="button" data-copy="install">Copy setup commands</button>
+    <p>Setup checks prerequisites, creates a project Python environment, installs dependencies, downloads Qwen and llama.cpp, downloads AASIST-L, starts the app and runs readiness checks. It stops if a step fails.</p>
+    <p class="note">No manual model-file search, Qwen training, OpenAI API key or Node.js installation is needed. The launcher fetches the FalkorDB image through Docker. This is a guided developer setup, not a standalone desktop installer.</p>
+  </section>
+  <section class="step"><span class="step-label">04 / OPEN YOUR LIVE WORKSPACE</span><h2>Ready means every check says PASS.</h2><p>Open the local app, select <strong>Open Workspace → Hybrid agent hub</strong>, and look for <strong>LOCAL MODEL READY</strong>. Choose <strong>Generate new draft</strong> to invoke Qwen. A fresh installation includes fictional Northstar data; the author's saved cases and sample downloads are not included.</p>
+    <a class="button" href="http://127.0.0.1:8100/" target="_blank" rel="noopener">Open app on this computer ↗</a>
+    <p>For audio: upload a non-sensitive test recording, save its metadata inspection in <strong>Media analysis</strong>, then run the experimental audio screen in <strong>Deepfake lab</strong>. Qwen summarizes verified tool context; AASIST-L provides research audio cues. Neither establishes an authenticity verdict. Visual deepfake detection and automatic transcription are not installed.</p>
+  </section>
+  <section class="step"><span class="step-label">05 / NEXT TIME</span><h2>Start without reinstalling.</h2><p>Open Docker Desktop, then run this from the project folder. Keep the folder in place to preserve stored paths and graph mounts.</p>
+    <pre id="start">powershell -ExecutionPolicy Bypass -File scripts/start_forensic_atlas.ps1</pre><button type="button" data-copy="start">Copy startup command</button>
+  </section>
+  <section class="step"><span class="step-label">NEED A HAND?</span><h2>Find the next step.</h2>
+    <details><summary>A command is not recognized</summary><p>Check that the tool is installed and available on PATH, then open a new PowerShell window. If Python opens the Store, install/configure the real interpreter first.</p></details>
+    <details><summary>Docker cannot connect</summary><p>Open Docker Desktop and complete any setup or reboot it requests. Wait for its Linux engine, then retry <code>docker info</code>.</p></details>
+    <details><summary>A package or model download failed</summary><p>Read the error, check internet access, disk capacity and network restrictions, then rerun setup. Do not use a different model file to bypass a checksum mismatch.</p></details>
+    <details><summary>Qwen or the application is unavailable</summary><p>Run the startup command. Inspect <code>output/llm.stderr.log</code> for the model and <code>output/api.stderr.log</code> for the app. Run <code>.\.venv\Scripts\python.exe scripts/deployment_preflight.py</code> for health checks.</p></details>
+    <details><summary>I still see demo data online</summary><p>The public Vercel site is the demo. Use <code>http://127.0.0.1:8100/</code> on the same computer where you installed the full application. Local links do not connect visitors to the author's laptop.</p></details>
+    <p><a href="https://github.com/Aaditya252/Forensic-Atlas/blob/main/docs/GETTING_STARTED.md">Read the complete installation guide ↗</a></p>
+  </section>
+  <p class="foot" id="copy-status" role="status" aria-live="polite"></p>
+  <script>
+    document.addEventListener('click',async event=>{const button=event.target.closest('[data-copy]');if(!button)return;const text=document.getElementById(button.dataset.copy).textContent;try{await navigator.clipboard.writeText(text);document.getElementById('copy-status').textContent='Commands copied. Paste them into PowerShell.';}catch{document.getElementById('copy-status').textContent='Copy unavailable. Select the commands above and copy them manually.';}});
+  </script>
+</main></body></html>

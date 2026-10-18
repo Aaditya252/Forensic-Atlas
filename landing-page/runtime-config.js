@@ -24,6 +24,11 @@ if (!isLocalhost) {
   localLink.target = '_blank';
   localLink.rel = 'noopener';
   notice.appendChild(localLink);
+  const setupLink = document.createElement('a');
+  setupLink.href = '/setup';
+  setupLink.textContent = ' Need to install? Setup guide';
+  setupLink.style.cssText = 'color:#9eeadd;text-decoration:underline;margin-left:8px';
+  notice.appendChild(setupLink);
   notice.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:10000;padding:10px 18px;background:#152638;color:#fff;font:13px/1.5 system-ui;text-align:center;border-top:1px solid #6db7ad';
   document.body.appendChild(notice);
 }

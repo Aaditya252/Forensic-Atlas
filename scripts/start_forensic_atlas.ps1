@@ -53,7 +53,10 @@ if ($ForensicHealth) {
     Write-Output "Forensic Atlas is already running: http://127.0.0.1:$Port/"
     return
 }
-$ForensicPython = (Get-Command python -ErrorAction Stop).Source
+$ForensicPython = Join-Path $ForensicRoot '.venv\Scripts\python.exe'
+if (-not (Test-Path -LiteralPath $ForensicPython)) {
+    $ForensicPython = (Get-Command python -ErrorAction Stop).Source
+}
 $env:SUTRAM_API_PORT = "$Port"
 $ForensicServer = Start-Process -FilePath $ForensicPython -ArgumentList @('-m','backend.app','--seed-demo','--sync-demo-graph') -WorkingDirectory $ForensicRoot -WindowStyle Hidden -RedirectStandardOutput (Join-Path $ForensicOutput 'api.stdout.log') -RedirectStandardError (Join-Path $ForensicOutput 'api.stderr.log') -PassThru
 $ForensicServer.Id | Set-Content -LiteralPath (Join-Path $ForensicOutput 'api.pid')

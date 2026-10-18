@@ -9,6 +9,10 @@ tools, and review every generated statement in one dashboard.
 
 **Python · FastAPI · SQLite · FalkorDB · llama.cpp · Qwen3.5-2B · JavaScript**
 
+**New here? [Start with the download and installation guide](docs/GETTING_STARTED.md).**
+It explains which tools to install, where to get them, and how to launch the full
+Qwen/audio stack with one setup command. [Website setup guide](https://forensic-atlas.vercel.app/setup).
+
 ## What works today
 
 | Workflow | Implemented behavior |

@@ -1189,6 +1189,7 @@ def entry_page(request: Request):
     html = html.replace('href="cases.html" class="nav-module-link highlight"',
                         'href="/workspace.html?case=DF-24-017#overview" class="nav-module-link highlight"')
     html = html.replace('href="cases.html"', 'href="/cases.html"')
+    html = html.replace('href="setup.html"', 'href="/landing/setup.html"')
     html = html.replace('Explore Demo &rarr;', 'Open Workspace &rarr;')
     return HTMLResponse(html)
 
