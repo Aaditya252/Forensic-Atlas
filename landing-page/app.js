@@ -1,5 +1,6 @@
 import { initializeAudioScreen } from './src/ui/audio-screen.js';
 import { renderEntityMap } from './src/ui/entity-map.js';
+import { demoRelationshipPage } from './src/data/demo-relationship-graph.js';
 import { initializeTestUpload } from './src/ui/test-upload.js';
 import { config } from './src/config.js';
 import { createWorkspaceRepository } from './src/services/workspace-repository.js';
@@ -175,6 +176,12 @@ function route(){
  if(!workspace){pageContent.innerHTML='<div class="loading-state" role="status"><span class="loading-spinner"></span><strong>Opening case workspace</strong><span>Loading the selected case snapshot…</span></div>';return;}
   if(repository.mode==='api'&&selected==='deepfake'){loadDeepfakePage();if(!deepfakePollTimer)deepfakePollTimer=setInterval(()=>{if(location.hash==='#deepfake'&&!document.hidden)loadDeepfakePage({force:true});},15000);return;}
   if(selected==='agents'){loadAgentHubPage();return;}
+  if(repository.mode==='demo'&&selected==='entities'){
+   pageContent.innerHTML=renderApiPage(demoRelationshipPage());
+   pageContent.querySelector('.graph-agent-panel')?.remove();
+   document.title='Evidence relationship graph — Forensic Atlas';
+   window.scrollTo({top:0,behavior:'instant'});return;
+  }
   if(repository.mode==='api'&&selected!=='overview'){loadRemotePage(selected);return;}
  pageContent.innerHTML=renderers[selected]();document.title=`${titles[selected]} — Forensic Atlas`;window.scrollTo({top:0,behavior:'instant'});
 }
