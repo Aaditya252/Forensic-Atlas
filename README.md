@@ -47,6 +47,9 @@ the coordinator uses deterministic rules rather than independent LLM investigato
 
 ## Run the full application
 
+**Qwen is the local neural component of the hybrid workflow.** Start the full
+stack below to use it; the public Vercel demo does not run model inference.
+
 The current launcher targets **Windows x64** with Docker Desktop using Linux
 containers. Install Python 3.11+, Git, Docker Desktop, and ffmpeg/ffprobe on PATH.
 Model downloads require internet access during setup.
@@ -71,6 +74,93 @@ Qwen setup fetches approximately 1.28 GB of pinned Q4_K_M weights and the Window
 CPU runtime. Manifests record revisions, checksums and provenance. Reserve disk
 capacity for models, originals, graph persistence and backups. CPU latency
 depends on the host and workload.
+
+## Run Qwen in the hybrid agent hub
+
+Forensic Atlas combines **Qwen3.5-2B Q4_K_M**, served through llama.cpp, with
+deterministic evidence tools and FalkorDB memory. Qwen ranks and selects verified
+fact IDs; the application copies their exact statements and citations into an
+unreviewed draft. This makes model-assisted synthesis useful for reviewing audio
+and suspected deepfake cases while keeping observations tied to their sources.
+
+### Model setup and startup
+
+After installing the full dependencies above, run:
+
+```powershell
+# One-time download of pinned Qwen weights and Windows CPU runtime.
+python scripts/setup_phase2_model.py
+
+# Start FalkorDB, Qwen and the live application together.
+powershell -ExecutionPolicy Bypass -File scripts/start_forensic_atlas.ps1
+
+# Confirm tools, model assets and live services are ready.
+python scripts/deployment_preflight.py
+```
+
+The launcher starts Qwen automatically. To start just the already-installed
+model service, use `powershell -ExecutionPolicy Bypass -File scripts/start_phase2_model.ps1`.
+The model endpoint is `http://127.0.0.1:8111/v1`; the application runs at
+`http://127.0.0.1:8100/`. No cloud LLM key is needed. Do not use `-SkipModel`
+when you want Qwen summaries.
+
+Open a case, choose **Hybrid agent hub**, and confirm **LOCAL MODEL READY**.
+**Run agents again** executes the deterministic coordinator and specialist
+tools. **Generate new draft**, under **Cited case summary**, explicitly invokes
+Qwen. Inspect **Citations and verification**, recall the saved episode from
+FalkorDB, then create a report from the saved summary in **Reports**.
+
+### Audio and suspected deepfake workflow
+
+| Component | Responsibility |
+| --- | --- |
+| ffmpeg / ffprobe | Decode supported audio and inspect media container and stream metadata |
+| Waveform tools | Measure amplitude, min/max and RMS; support playback and seeking |
+| AASIST-L | Produce experimental, windowed audio anti-spoof screening cues, including a video's audio track |
+| Deterministic specialists | Read case coverage, unresolved reviews, graph paths and saved media inspections |
+| Qwen + exact-source verifier | Select verified context facts for a cited case-summary draft |
+| FalkorDB + report storage | Retain source-linked agent episodes, handoffs and immutable report snapshots |
+
+1. Upload a supported recording or video into the **local** case workspace.
+2. In **Media analysis**, run and save the metadata inspection. Review the
+   registered digest, format, streams and any parser gaps.
+3. In **Deepfake lab**, select the source, acknowledge the experimental scope,
+   and run **Analyze audio & show timed waveform**. Review the measured waveform
+   and window cues against the original audio.
+4. Return to **Hybrid agent hub**, run the coordinator, then generate a Qwen
+   draft. Saved metadata-inspection observations enter the bounded summary
+   context with artifact IDs and inspection timestamps. When available, the
+   summary requires a saved media-inspection fact alongside graph and review facts.
+5. Review citations and save the cited report. Keep audio-screen results as
+   separate research observations; they are not automatically promoted into
+   Qwen authenticity findings.
+
+**Qwen does not listen to raw audio, transcribe speech, inspect video frames or
+detect deepfakes in this implementation.** It summarizes verified tool context.
+AASIST-L handles experimental audio screening and can produce false positives;
+its scores are not validated authenticity verdicts. No validated visual deepfake
+detector is installed. Metadata, waveforms and model summaries each serve a
+different part of examiner review.
+
+### Verify actual model execution
+
+With the local stack running:
+
+```powershell
+python scripts/verify_phase2.py
+python scripts/verify_phase5.py
+python scripts/verify_phase6.py
+```
+
+These checks exercise real Qwen generation, exact-source verification, graph
+memory, synthetic-media inspection and a media-aware cited report. They create
+labeled verification records in the fictional Northstar case. Phase 6 uses the
+artifact produced by Phase 5, so run them in the order shown.
+
+If the model is unavailable, rerun the launcher and preflight; inspect
+`output/llm.stderr.log` and `output/api.stderr.log`. A missing graph connection
+also blocks cited summaries because source-linked context and memory require
+FalkorDB. The app reports the unavailable dependency rather than inventing output.
 
 ## Verify
 
