@@ -40,10 +40,16 @@ if (-not $SkipModel -and (Test-Path -LiteralPath (Join-Path $ForensicRoot 'model
 }
 $ForensicHealthUrl = "http://127.0.0.1:$Port/health"
 $ForensicHealth = $null
+function Assert-ForensicHealth($Health) {
+    if (-not $Health.storage.sqlite) { throw 'The case database is unavailable. Inspect output/api.stderr.log.' }
+    if (-not $Health.graph.connected) { throw 'The API cannot reach FalkorDB. Inspect the project graph container.' }
+    if (-not $SkipModel -and -not $Health.models.localLLM.ready) { throw 'Qwen is not ready. Inspect output/llm.stderr.log.' }
+}
 try { $ForensicHealth = Invoke-RestMethod -Uri $ForensicHealthUrl -TimeoutSec 3 } catch {}
 if ($ForensicHealth) {
     if ([System.IO.Path]::GetFullPath($ForensicHealth.storage.path) -ne (Join-Path $ForensicRoot 'cases\storage\sutram.sqlite3')) { throw 'Port is serving another case database; it was left running.' }
     if ($ForensicHealth.service -ne 'forensic-atlas') { throw "Port $Port is occupied by another service; it was left running." }
+    Assert-ForensicHealth $ForensicHealth
     Write-Output "Forensic Atlas is already running: http://127.0.0.1:$Port/"
     return
 }
@@ -59,6 +65,6 @@ do {
     if ($ForensicServer.HasExited) { throw 'The API exited. Inspect output/api.stderr.log.' }
 } while ((Get-Date) -lt $ForensicDeadline)
 if (-not $ForensicHealth -or $ForensicHealth.service -ne 'forensic-atlas') { throw 'The API did not become ready; inspect output/api.stderr.log.' }
-if (-not $ForensicHealth.graph.connected) { throw 'The API started but cannot reach FalkorDB.' }
+Assert-ForensicHealth $ForensicHealth
 Write-Output "Forensic Atlas ready: http://127.0.0.1:$Port/"
 Write-Output "Graph container: $ForensicContainer"
