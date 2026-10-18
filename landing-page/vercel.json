@@ -20,19 +20,5 @@
         }
       ]
     }
-  ],
-  "routes": [
-    {
-      "src": "/$",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/cases",
-      "dest": "/cases.html"
-    },
-    {
-      "src": "/workspace",
-      "dest": "/workspace.html"
-    }
   ]
 }
